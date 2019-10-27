@@ -1,0 +1,21 @@
+no web-management http
+logging host {{ ovi_server }}
+logging buffered errors
+logging buffered 4000
+logging persistence
+logging on
+hostname {{ hostname }}
+
+{% for vlan in vlans %}
+
+# Generating Configuration for: {{ vlan.name }}
+vlan {{ vlan.vlan_var }}
+    name {{ vlan.vlan_var }}
+
+interface vlan {{ vlan.vlan_var }}
+    description "This is the description for {{ vlan.vlan_var }}"
+    ip address {{ vlan.ip_var }} {{ vlan.mask_var }}
+
+{% endfor %}
+
+# Config Complete

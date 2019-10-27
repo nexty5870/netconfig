@@ -1,0 +1,34 @@
+{% for port in ports -%}
+
+# Generating Configuration for: {{ port.name }}
+{% if port.mode == "AP" %}
+interface {{ port.name }}
+vlan {{ port.vlan }} tagged
+description {{ port.mode }}
+spanning-tree
+{% if port.state == "shutdown" -%}
+description "Empty-Disable"
+disable
+{% elif port.state == "enable" -%}
+description "Configured by NetConfig"
+enable
+{% else %}
+description "Port disable due to invalid input"
+shutdown
+{% endif %}
+
+{% elif port.mode == "Uplink" -%}
+interface {{ port.name }}
+vlan {{ port.vlan }} tagged
+description "Uplink"
+
+{% else %}
+interface {{ port.name }}
+description "Shutdown, invalid input"
+shutdown
+{% endif %}
+
+
+## Config complete ##
+{% endfor %}
+
