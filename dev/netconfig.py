@@ -118,7 +118,7 @@ def netmap_filecreation():
     clear()
     header_function()
     input('Netmap process finish. Press [Enter] to create the file')
-
+    print (mac,ips,uplink,apstart,apend)
 
 def setup():
     header_function()
