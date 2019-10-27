@@ -1,5 +1,7 @@
 from jinja2 import Template
 
+
+file_location_root= 'C:/Users/quent/OneDrive/Documents/Python Scripts/netconfig'
 apstart = '1'
 apend = '15'
 
@@ -18,7 +20,7 @@ ports = [
      'state': 'enable'}
 ]
 
-with open('C:/Users/qdaems/Documents/script/netconfig/dev/vendor/hp/conditional.j2') as f:
+with open(file_location_root+'/dev/vendor/hp/conditional.j2') as f:
     config_in = Template(f.read())
 
 config_out = config_in.render(ports=ports)

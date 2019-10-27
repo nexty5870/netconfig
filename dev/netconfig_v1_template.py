@@ -1,5 +1,6 @@
 from jinja2 import Template
 
+file_location_root= 'C:/Users/quent/OneDrive/Documents/Python Scripts/netconfig'
 management_ip = '172.19.255.10'
 management_mask = '255.255.255.0'
 hostname = 'Test-Jinja2'
@@ -19,10 +20,10 @@ vlans = [
 #    vlan_in_template = Template(f.read())
 ###
 
-with open ('C:/Users/qdaems/Documents/script/netconfig/dev/vendor/hp/svi_template.j2') as f:
+with open (file_location_root+'/dev/vendor/hp/svi_template.j2') as f:
     svi_in_template = Template(f.read())
 
-with open('C:/Users/qdaems/Documents/script/netconfig/dev/vendor/hp/config_loop.j2') as f:
+with open(file_location_root+'/dev/vendor/hp/config_loop.j2') as f:
     config_in = Template(f.read())
 
 config_out = config_in.render(hostname=hostname,vlans=vlans,ovi_server=ovi_server)
