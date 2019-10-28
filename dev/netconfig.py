@@ -1,42 +1,152 @@
-from jinja2 import Template
+import os
+from termcolor import colored
 
-management_ip = '172.19.255.10'
-management_mask = '255.255.255.0'
-hostname = 'Test-Jinja2'
-ovi_server = '172.27.1.1'
-vlans = [
-    {'name:': 'Guest_Wireless',
-     'vlan_var': 1000},
-    {'name:': 'Management IP',
-     'vlan_var' : 100,
-     'ip_var' : management_ip,
-     'mask_var' : management_mask }
+clear = lambda: os.system('cls')
 
-]
+header = "\
+ _   _      _                          __ _       \n\
+| \ | |    | |                        / _(_)      \n\
+|  \| | ___| |_ ______ ___ ___  _ __ | |_ _  __ _ \n\
+| . ` |/ _ \ __|______/ __/ _ \| '_ \|  _| |/ _` |\n\
+| |\  |  __/ |_      | (_| (_) | | | | | | | (_| |\n\
+\_| \_/\___|\__|      \___\___/|_| |_|_| |_|\__, |\n\
+                                             __/ |\n\
+                                            |___/ \n"
+colors = {
+    'blue': '\033[94m',
+    'pink': '\033[95m',
+    'green': '\033[92m',
+}
 
-### Vlan template test, --- to be cleared ---
-#with open('C:/Users/qdaems/Documents/script/netconfig/dev/vendor/hp/vlan_template.j2') as f:
-#    vlan_in_template = Template(f.read())
-###
+def header_function():
+    clear()
+    print(colored(header, 'blue'))
+    print(colored('version 0.1', 'green' ))
+    print(colored('*'*30, 'yellow'))
+    print()
 
-with open ('C:/Users/qdaems/Documents/script/netconfig/dev/vendor/hp/svi_template.j2') as f:
-    svi_in_template = Template(f.read())
+def colorize(string, color):
+    if not color in colors: return string
+    return colors[color] + string + '\033[0m'
 
-with open('C:/Users/qdaems/Documents/script/netconfig/dev/vendor/hp/config_loop.j2') as f:
-    config_in = Template(f.read())
 
-config_out = config_in.render(hostname=hostname,vlans=vlans,ovi_server=ovi_server)
+def netmap_mac():
+    clear()
+    header_function()
+    print('Start by scanning the mac address of the device: ')
+    print('When finish press <CTRL+D>')
+    mac = []
+    while True:
+        try:
+            line = input()
+            mac.append(line)
+        except EOFError:
+            break
 
-### SVI template test, --- to be cleared ---
-#svi_output = svi_in_template.render(hostname=hostname, ip=management_ip, mask=management_mask)
-###
+    print(mac)
+    netmap_ip()
 
-print('*' * 30)
-print()
-#print('!SVI Output from SVI template')
-#print(svi_output)
-print('Script generator creation started')
-print('*' * 30)
-print(config_out)
-print('*' * 30)
-print()
+def netmap_ip():
+    clear()
+    header_function()
+    print('Enter the management IP for each MAC you scanned: ')
+    print('When finish press <CTRL+D>')
+    ips = []
+    while True:
+        try:
+            line = input()
+            ips.append(line)
+        except EOFError:
+            break
+
+    print ('This is netmap_ip()')
+    print(ips)
+    netmap_uplink()
+
+def netmap_uplink():
+    clear()
+    header_function()
+    print('Enter each uplink for the switch you scanned: ')
+    print('When finish press <CTRL+D>')
+    uplink = []
+    while True:
+        try:
+            line = input()
+            uplink.append(line)
+        except EOFError:
+            break
+
+    print ('This is netmap_uplink()')
+    print(uplink)
+    netmap_apstart()
+
+def netmap_apstart():
+    clear()
+    header_function()
+    print('Enter the AP port start for each switch you scanned: ')
+    print('When finish press <CTRL+D>')
+    apstart = []
+    while True:
+        try:
+            line = input()
+            apstart.append(line)
+        except EOFError:
+            break
+
+    print ('This is netmap_apstart()')
+    print(apstart)
+    netmap_apend()
+
+def netmap_apend():
+    clear()
+    header_function()
+    print('Enter the AP port end for each switch you scanned: ')
+    print('When finish press <CTRL+D>')
+    apend = []
+    while True:
+        try:
+            line = input()
+            apend.append(line)
+        except EOFError:
+            break
+
+    print ('This is netmap_apend()')
+    print(apend)
+    netmap_filecreation()
+
+def netmap_filecreation():
+    clear()
+    header_function()
+    input('Netmap process finish. Press [Enter] to create the file')
+    print (mac,ips,uplink,apstart,apend)
+
+def setup():
+    header_function()
+    print('This is the menu Setup')
+    input('Press [Enter] for menu')
+    menu()
+
+def exit():
+    clear()
+    input('Exiting NetConfig. Press [Enter]')
+
+
+def menu():
+    clear()
+    header_function()
+    print('1. Start Netmap')
+    print('2. Setup')
+    print('3. Exit')
+    choice = input('Enter your choice: ')
+    if choice == '1':
+        netmap_mac()
+    elif choice == '2':
+        setup()
+    elif choice == '3':
+        exit()
+    else:
+        clear()
+        input('Unsupported input, Press [Enter] for menu')
+        menu()
+
+menu()
